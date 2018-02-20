@@ -7,7 +7,7 @@
 #include <vector>
 
 constexpr static int CONTAINERSIZE = 30;
-constexpr int rbound               = 1e8;
+constexpr int rbound               = 1e5;
 constexpr static int NTHREADS      = 8;
 typedef int DATATYPE;
 
