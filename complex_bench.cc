@@ -8,8 +8,8 @@
 constexpr static int CONTAINERSIZE = 30;
 constexpr static int N_BIGTHINGS = 100;
 typedef int INNER_DATATYPE;
-template <typename T>
-using OUTER_CONTAINER_TYPE = std::vector<T>;
+template <typename BIGTHING_TYPE>
+using OUTER_CONTAINER_TYPE = std::vector<BIGTHING_TYPE>;
 
 
 
@@ -30,8 +30,8 @@ struct bigthing {
 };
 
 
-template <typename T>
-using OUTER_CONTAINER = OUTER_CONTAINER_TYPE<bigthing<T>>;
+template <typename INNER_CONTAINER>
+using OUTER_CONTAINER = OUTER_CONTAINER_TYPE<bigthing<INNER_CONTAINER>>;
 
 
 template <typename INNER_CONTAINER>
@@ -63,10 +63,13 @@ BENCHMARK( test_boost_small_vector )
     ->ComputeStatistics( "min", []( const std::vector<double>& v ) -> double {
       return *( std::min_element( std::begin( v ), std::end( v ) ) );
     } );
-BENCHMARK( test_boost_static_vector)
-    ->ComputeStatistics( "min", []( const std::vector<double>& v ) -> double {
-      return *( std::min_element( std::begin( v ), std::end( v ) ) );
-    } );
+
+// BAD ALLOC
+
+//BENCHMARK( test_boost_static_vector)
+//    ->ComputeStatistics( "min", []( const std::vector<double>& v ) -> double {
+//      return *( std::min_element( std::begin( v ), std::end( v ) ) );
+//    } );
 BENCHMARK( test_llvm_small_vector  )
     ->ComputeStatistics( "min", []( const std::vector<double>& v ) -> double {
       return *( std::min_element( std::begin( v ), std::end( v ) ) );
