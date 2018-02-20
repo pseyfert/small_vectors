@@ -1,0 +1,28 @@
+-----------------------------------------------------------------------
+Benchmark                                Time           CPU Iterations
+-----------------------------------------------------------------------
+[0;32mtest_std_vector_mean            [m[0;33m       323 ns        323 ns [m[0;36m  43163500[m
+[m[0;32mtest_std_vector_median          [m[0;33m       322 ns        322 ns [m[0;36m  43163500[m
+[m[0;32mtest_std_vector_stddev          [m[0;33m         2 ns          2 ns [m[0;36m  43163500[m
+[m[0;32mtest_std_vector_min             [m[0;33m       321 ns        321 ns [m[0;36m  43163500[m
+[m[0;32mtest_boost_small_vector_mean    [m[0;33m        34 ns         34 ns [m[0;36m 406692289[m
+[m[0;32mtest_boost_small_vector_median  [m[0;33m        34 ns         34 ns [m[0;36m 406692289[m
+[m[0;32mtest_boost_small_vector_stddev  [m[0;33m         0 ns          0 ns [m[0;36m 406692289[m
+[m[0;32mtest_boost_small_vector_min     [m[0;33m        33 ns         33 ns [m[0;36m 406692289[m
+[m[0;32mtest_boost_static_vector_mean   [m[0;33m        20 ns         20 ns [m[0;36m 698017673[m
+[m[0;32mtest_boost_static_vector_median [m[0;33m        20 ns         20 ns [m[0;36m 698017673[m
+[m[0;32mtest_boost_static_vector_stddev [m[0;33m         0 ns          0 ns [m[0;36m 698017673[m
+[m[0;32mtest_boost_static_vector_min    [m[0;33m        20 ns         20 ns [m[0;36m 698017673[m
+[m[0;32mtest_llvm_small_vector_mean     [m[0;33m        62 ns         62 ns [m[0;36m 262731010[m
+[m[0;32mtest_llvm_small_vector_median   [m[0;33m        56 ns         56 ns [m[0;36m 262731010[m
+[m[0;32mtest_llvm_small_vector_stddev   [m[0;33m        12 ns         12 ns [m[0;36m 262731010[m
+[m[0;32mtest_llvm_small_vector_min      [m[0;33m        53 ns         53 ns [m[0;36m 262731010[m
+[m[0;32mtest_absl_inline_vector_mean    [m[0;33m        97 ns         97 ns [m[0;36m 143399850[m
+[m[0;32mtest_absl_inline_vector_median  [m[0;33m        95 ns         95 ns [m[0;36m 143399850[m
+[m[0;32mtest_absl_inline_vector_stddev  [m[0;33m         3 ns          3 ns [m[0;36m 143399850[m
+[m[0;32mtest_absl_inline_vector_min     [m[0;33m        95 ns         95 ns [m[0;36m 143399850[m
+[m[0;32mRESERVE_mean                    [m[0;33m        89 ns         89 ns [m[0;36m 160094946[m
+[m[0;32mRESERVE_median                  [m[0;33m        88 ns         88 ns [m[0;36m 160094946[m
+[m[0;32mRESERVE_stddev                  [m[0;33m         6 ns          6 ns [m[0;36m 160094946[m
+[m[0;32mRESERVE_min                     [m[0;33m        87 ns         87 ns [m[0;36m 160094946[m
+[m

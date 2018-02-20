@@ -1,0 +1,37 @@
+~/coding/small_vector > ./complex_omp_bench --benchmark_repetitions=4 --benchmark_report_aggregates_only=true
+2018-02-20 22:08:23
+Run on (4 X 3200 MHz CPU s)
+CPU Caches:
+  L1 Data 32K (x2)
+  L1 Instruction 32K (x2)
+  L2 Unified 256K (x2)
+  L3 Unified 3072K (x1)
+***WARNING*** CPU scaling is enabled, the benchmark real time measurements may be noisy and will incur extra overhead.
+--------------------------------------------------------------------------
+Benchmark                                   Time           CPU Iterations
+--------------------------------------------------------------------------
+test_std_vector_mean              24588125006 ns 22746352845 ns          1
+test_std_vector_median            24538055019 ns 22728140977 ns          1
+test_std_vector_stddev              557044565 ns   675311425 ns          1
+test_std_vector_min               24098917895 ns 21985316925 ns          1
+test_boost_small_vector_mean       2089026460 ns  1944465572 ns          1
+test_boost_small_vector_median     2098081828 ns  1996471900 ns          1
+test_boost_small_vector_stddev       55398117 ns   147601815 ns          1
+test_boost_small_vector_min        2013479852 ns  1733805900 ns          1
+test_boost_static_vector_mean      1378769018 ns  1172674146 ns          1
+test_boost_static_vector_median    1364427283 ns  1168046318 ns          1
+test_boost_static_vector_stddev      96644309 ns   149725571 ns          1
+test_boost_static_vector_min       1276833703 ns  1016045584 ns          1
+test_llvm_small_vector_mean        3012977683 ns  2846068738 ns          1
+test_llvm_small_vector_median      3028350999 ns  2883840751 ns          1
+test_llvm_small_vector_stddev        59776814 ns   137227755 ns          1
+test_llvm_small_vector_min         2931278488 ns  2649450804 ns          1
+test_absl_inline_vector_mean       5946587379 ns  5603826167 ns          1
+test_absl_inline_vector_median     5902992849 ns  5557115491 ns          1
+test_absl_inline_vector_stddev       95731215 ns   294211917 ns          1
+test_absl_inline_vector_min        5891050396 ns  5356575938 ns          1
+create_and_push_and_reserve_mean   8303401509 ns  7959617334 ns          1
+create_and_push_and_reserve_median 8316624122 ns  8134525709 ns          1
+create_and_push_and_reserve_stddev  125080634 ns   389633624 ns          1
+create_and_push_and_reserve_min    8151761100 ns  7376660675 ns          1
+
