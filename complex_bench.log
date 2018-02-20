@@ -1,0 +1,37 @@
+~/coding/small_vector > ./complex_bench --benchmark_min_time=10 --benchmark_repetitions=10 --benchmark_report_aggregates_only=true                                                                     
+2018-02-20 20:06:21
+Run on (4 X 3200 MHz CPU s)
+CPU Caches:
+  L1 Data 32K (x2)
+  L1 Instruction 32K (x2)
+  L2 Unified 256K (x2)
+  L3 Unified 3072K (x1)
+***WARNING*** CPU scaling is enabled, the benchmark real time measurements may be noisy and will incur extra overhead.
+--------------------------------------------------------------------------
+Benchmark                                   Time           CPU Iterations
+--------------------------------------------------------------------------
+test_std_vector_mean                    22880 ns      22879 ns     621427
+test_std_vector_median                  22765 ns      22764 ns     621427
+test_std_vector_stddev                    363 ns        362 ns     621427
+test_std_vector_min                     22589 ns      22587 ns     621427
+test_boost_small_vector_mean             2412 ns       2412 ns    5826431
+test_boost_small_vector_median           2412 ns       2412 ns    5826431
+test_boost_small_vector_stddev              3 ns          3 ns    5826431
+test_boost_small_vector_min              2406 ns       2406 ns    5826431
+test_boost_static_vector_mean            1663 ns       1663 ns    8572703
+test_boost_static_vector_median          1644 ns       1644 ns    8572703
+test_boost_static_vector_stddev            33 ns         33 ns    8572703
+test_boost_static_vector_min             1633 ns       1633 ns    8572703
+test_llvm_small_vector_mean              3744 ns       3743 ns    3747365
+test_llvm_small_vector_median            3743 ns       3742 ns    3747365
+test_llvm_small_vector_stddev              17 ns         17 ns    3747365
+test_llvm_small_vector_min               3725 ns       3725 ns    3747365
+test_absl_inline_vector_mean             6634 ns       6632 ns    2115585
+test_absl_inline_vector_median           6623 ns       6621 ns    2115585
+test_absl_inline_vector_stddev             34 ns         34 ns    2115585
+test_absl_inline_vector_min              6603 ns       6601 ns    2115585
+create_and_push_and_reserve_mean         7180 ns       7178 ns    1999907
+create_and_push_and_reserve_median       7170 ns       7169 ns    1999907
+create_and_push_and_reserve_stddev        182 ns        181 ns    1999907
+create_and_push_and_reserve_min          6947 ns       6945 ns    1999907
+
