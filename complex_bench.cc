@@ -53,6 +53,31 @@ static void test_boost_static_vector( benchmark::State& state ) { create_and_pus
 static void test_llvm_small_vector  ( benchmark::State& state ) { create_and_push<llvm::SmallVector<INNER_DATATYPE, CONTAINERSIZE>>( state ); }
 static void test_absl_inline_vector ( benchmark::State& state ) { create_and_push<absl::InlinedVector<INNER_DATATYPE, CONTAINERSIZE>>( state ); }
 
+
+template <typename CONTAINER>
+struct reservething {
+  reservething(size_t N) {
+    m_collection.reserve(N);
+    for (size_t ii = 0 ; ii < N ; ++ii) {
+      m_collection.push_back(ii);
+    }
+  }
+  CONTAINER m_collection;
+};
+
+static void create_and_push_and_reserve( benchmark::State& state )
+{
+  for ( auto _ : state ) {
+    OUTER_CONTAINER_TYPE<reservething<std::vector<INNER_DATATYPE>>> asdf;
+    asdf.reserve(N_BIGTHINGS);
+    for ( size_t i = 0; i < N_BIGTHINGS; i++ ) {
+      asdf.push_back( i );
+    }
+    benchmark::ClobberMemory();
+  }
+}
+
+
 // TODO: enable reserve
 
 BENCHMARK( test_std_vector         )
@@ -75,6 +100,10 @@ BENCHMARK( test_llvm_small_vector  )
       return *( std::min_element( std::begin( v ), std::end( v ) ) );
     } );
 BENCHMARK( test_absl_inline_vector )
+    ->ComputeStatistics( "min", []( const std::vector<double>& v ) -> double {
+      return *( std::min_element( std::begin( v ), std::end( v ) ) );
+    } );
+BENCHMARK( create_and_push_and_reserve )
     ->ComputeStatistics( "min", []( const std::vector<double>& v ) -> double {
       return *( std::min_element( std::begin( v ), std::end( v ) ) );
     } );
