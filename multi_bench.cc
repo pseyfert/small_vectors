@@ -36,19 +36,11 @@ auto compute_min = []( const std::vector<double>& v ) -> double {
   return *( std::min_element( std::begin( v ), std::end( v ) ) );
 };
 
-BENCHMARK_TEMPLATE( create_and_push, std::vector<DATATYPE> )->ComputeStatistics( "min", compute_min );
-BENCHMARK_TEMPLATE( create_and_push, boost::container::small_vector<DATATYPE, CONTAINERSIZE> )
-    ->ComputeStatistics( "min", compute_min );
-BENCHMARK_TEMPLATE( create_and_push, boost::container::static_vector<DATATYPE, CONTAINERSIZE> )
-    ->ComputeStatistics( "min", compute_min );
-BENCHMARK_TEMPLATE( create_and_push, llvm::SmallVector<DATATYPE, CONTAINERSIZE> )
-    ->ComputeStatistics( "min", compute_min );
-BENCHMARK_TEMPLATE( create_and_push, absl::InlinedVector<DATATYPE, CONTAINERSIZE> )
-    ->ComputeStatistics( "min", compute_min );
-
-BENCHMARK( RESERVE )
-    ->ComputeStatistics( "min", []( const std::vector<double>& v ) -> double {
-      return *( std::min_element( std::begin( v ), std::end( v ) ) );
-    } );
+BENCHMARK_TEMPLATE( create_and_push, std::vector                    <DATATYPE               > )->ComputeStatistics( "min", compute_min )->ThreadRange(1,4);
+BENCHMARK_TEMPLATE( create_and_push, boost::container::small_vector <DATATYPE, CONTAINERSIZE> )->ComputeStatistics( "min", compute_min )->ThreadRange(1,4);
+BENCHMARK_TEMPLATE( create_and_push, boost::container::static_vector<DATATYPE, CONTAINERSIZE> )->ComputeStatistics( "min", compute_min )->ThreadRange(1,4);
+BENCHMARK_TEMPLATE( create_and_push, llvm::SmallVector              <DATATYPE, CONTAINERSIZE> )->ComputeStatistics( "min", compute_min )->ThreadRange(1,4);
+BENCHMARK_TEMPLATE( create_and_push, absl::InlinedVector            <DATATYPE, CONTAINERSIZE> )->ComputeStatistics( "min", compute_min )->ThreadRange(1,4);
+BENCHMARK(          RESERVE                                                                   )->ComputeStatistics( "min", compute_min )->ThreadRange(1,4);
 
 BENCHMARK_MAIN();
