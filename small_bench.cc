@@ -20,12 +20,6 @@ static void create_and_push( benchmark::State& state )
   }
 }
 
-static void test_std_vector         ( benchmark::State& state ) { create_and_push<std::vector<DATATYPE>>( state ); }
-static void test_boost_small_vector ( benchmark::State& state ) { create_and_push<boost::container::small_vector<DATATYPE, CONTAINERSIZE>>( state ); }
-static void test_boost_static_vector( benchmark::State& state ) { create_and_push<boost::container::static_vector<DATATYPE, CONTAINERSIZE>>( state ); }
-static void test_llvm_small_vector  ( benchmark::State& state ) { create_and_push<llvm::SmallVector<DATATYPE, CONTAINERSIZE>>( state ); }
-static void test_absl_inline_vector ( benchmark::State& state ) { create_and_push<absl::InlinedVector<DATATYPE, CONTAINERSIZE>>( state ); }
-
 static void RESERVE( benchmark::State& state )
 {
   for ( auto _ : state ) {
@@ -38,26 +32,20 @@ static void RESERVE( benchmark::State& state )
   }
 }
 
-BENCHMARK( test_std_vector         )
-    ->ComputeStatistics( "min", []( const std::vector<double>& v ) -> double {
-      return *( std::min_element( std::begin( v ), std::end( v ) ) );
-    } );
-BENCHMARK( test_boost_small_vector )
-    ->ComputeStatistics( "min", []( const std::vector<double>& v ) -> double {
-      return *( std::min_element( std::begin( v ), std::end( v ) ) );
-    } );
-BENCHMARK( test_boost_static_vector)
-    ->ComputeStatistics( "min", []( const std::vector<double>& v ) -> double {
-      return *( std::min_element( std::begin( v ), std::end( v ) ) );
-    } );
-BENCHMARK( test_llvm_small_vector  )
-    ->ComputeStatistics( "min", []( const std::vector<double>& v ) -> double {
-      return *( std::min_element( std::begin( v ), std::end( v ) ) );
-    } );
-BENCHMARK( test_absl_inline_vector )
-    ->ComputeStatistics( "min", []( const std::vector<double>& v ) -> double {
-      return *( std::min_element( std::begin( v ), std::end( v ) ) );
-    } );
+auto compute_min = []( const std::vector<double>& v ) -> double {
+  return *( std::min_element( std::begin( v ), std::end( v ) ) );
+};
+
+BENCHMARK_TEMPLATE( create_and_push, std::vector<DATATYPE> )->ComputeStatistics( "min", compute_min );
+BENCHMARK_TEMPLATE( create_and_push, boost::container::small_vector<DATATYPE, CONTAINERSIZE> )
+    ->ComputeStatistics( "min", compute_min );
+BENCHMARK_TEMPLATE( create_and_push, boost::container::static_vector<DATATYPE, CONTAINERSIZE> )
+    ->ComputeStatistics( "min", compute_min );
+BENCHMARK_TEMPLATE( create_and_push, llvm::SmallVector<DATATYPE, CONTAINERSIZE> )
+    ->ComputeStatistics( "min", compute_min );
+BENCHMARK_TEMPLATE( create_and_push, absl::InlinedVector<DATATYPE, CONTAINERSIZE> )
+    ->ComputeStatistics( "min", compute_min );
+
 BENCHMARK( RESERVE )
     ->ComputeStatistics( "min", []( const std::vector<double>& v ) -> double {
       return *( std::min_element( std::begin( v ), std::end( v ) ) );
