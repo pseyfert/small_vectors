@@ -25,8 +25,8 @@ using OUTER_CONTAINER_TYPE = std::vector<BIGTHING_TYPE>;
 template <typename CONTAINER>
 struct bigthing {
   bigthing(size_t N) {
-    for (size_t ii = 0 ; ii < N ; ++ii) {
-      m_collection.push_back(ii/2);
+    for (size_t ii = 0 ; ii < CONTAINERSIZE ; ++ii) {
+      m_collection.push_back(N%(1+ii));
     }
   }
   CONTAINER m_collection;
@@ -65,9 +65,9 @@ static void test_absl_inline_vector ( benchmark::State& state ) { create_and_pus
 template <typename CONTAINER>
 struct reservething {
   reservething(size_t N) {
-    m_collection.reserve(N);
-    for (size_t ii = 0 ; ii < N ; ++ii) {
-      m_collection.push_back(ii);
+    m_collection.reserve(CONTAINERSIZE);
+    for (size_t ii = 0 ; ii < CONTAINERSIZE ; ++ii) {
+      m_collection.push_back(N%(1+ii));
     }
   }
   CONTAINER m_collection;
