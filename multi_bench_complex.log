@@ -1,0 +1,104 @@
+./multi_bench_complex --benchmark_min_time=3 --benchmark_repetitions=7 --benchmark_report_aggregates_only=true | \grep "_min " > ./multi_bench_complex.log
+
+create_and_push<std::vector <INNER_DATATYPE> , DONT_RESERVE_STORAGE, EXACTFULL>/real_time/threads:1_min                                           55838 ns      55821 ns     72614
+create_and_push<std::vector <INNER_DATATYPE> , DONT_RESERVE_STORAGE, EXACTFULL>/real_time/threads:2_min                                           33044 ns      66077 ns    124370
+create_and_push<std::vector <INNER_DATATYPE> , DONT_RESERVE_STORAGE, EXACTFULL>/real_time/threads:4_min                                           28544 ns     111876 ns    136244
+create_and_push_and_reserve<DONT_RESERVE_STORAGE, EXACTFULL>/real_time/threads:1_min                                                              37780 ns      37778 ns    104847
+create_and_push_and_reserve<DONT_RESERVE_STORAGE, EXACTFULL>/real_time/threads:2_min                                                              19907 ns      39802 ns    210836
+create_and_push_and_reserve<DONT_RESERVE_STORAGE, EXACTFULL>/real_time/threads:4_min                                                              14493 ns      56883 ns    291344
+create_and_push<absl::InlinedVector <INNER_DATATYPE, CONTAINERSIZE> , DONT_RESERVE_STORAGE, EXACTFULL>/real_time/threads:1_min                    39575 ns      39565 ns     92386
+create_and_push<absl::InlinedVector <INNER_DATATYPE, CONTAINERSIZE> , DONT_RESERVE_STORAGE, EXACTFULL>/real_time/threads:2_min                    21004 ns      42003 ns    199246
+create_and_push<absl::InlinedVector <INNER_DATATYPE, CONTAINERSIZE> , DONT_RESERVE_STORAGE, EXACTFULL>/real_time/threads:4_min                    15153 ns      59581 ns    277452
+create_and_push<llvm::SmallVector <INNER_DATATYPE, CONTAINERSIZE> , DONT_RESERVE_STORAGE, EXACTFULL>/real_time/threads:1_min                      29729 ns      29727 ns    100000
+create_and_push<llvm::SmallVector <INNER_DATATYPE, CONTAINERSIZE> , DONT_RESERVE_STORAGE, EXACTFULL>/real_time/threads:2_min                      15753 ns      31500 ns    263560
+create_and_push<llvm::SmallVector <INNER_DATATYPE, CONTAINERSIZE> , DONT_RESERVE_STORAGE, EXACTFULL>/real_time/threads:4_min                      10301 ns      39747 ns    420784
+create_and_push<boost::container::small_vector <INNER_DATATYPE, CONTAINERSIZE> , DONT_RESERVE_STORAGE, EXACTFULL>/real_time/threads:1_min         30579 ns      30578 ns    124069
+create_and_push<boost::container::small_vector <INNER_DATATYPE, CONTAINERSIZE> , DONT_RESERVE_STORAGE, EXACTFULL>/real_time/threads:2_min         16042 ns      32075 ns    261260
+create_and_push<boost::container::small_vector <INNER_DATATYPE, CONTAINERSIZE> , DONT_RESERVE_STORAGE, EXACTFULL>/real_time/threads:4_min         10109 ns      38405 ns    422612
+create_and_push<boost::container::static_vector<INNER_DATATYPE, CONTAINERSIZE> , DONT_RESERVE_STORAGE, EXACTFULL>/real_time/threads:1_min         27932 ns      27924 ns    148292
+create_and_push<boost::container::static_vector<INNER_DATATYPE, CONTAINERSIZE> , DONT_RESERVE_STORAGE, EXACTFULL>/real_time/threads:2_min         14800 ns      29595 ns    283198
+create_and_push<boost::container::static_vector<INNER_DATATYPE, CONTAINERSIZE> , DONT_RESERVE_STORAGE, EXACTFULL>/real_time/threads:4_min          8889 ns      34480 ns    468972
+create_and_push<std::vector <INNER_DATATYPE> , RESERVE_STORAGE, EXACTFULL>/real_time/threads:1_min                                                37618 ns      37607 ns    111363
+create_and_push<std::vector <INNER_DATATYPE> , RESERVE_STORAGE, EXACTFULL>/real_time/threads:2_min                                                20110 ns      40212 ns    209172
+create_and_push<std::vector <INNER_DATATYPE> , RESERVE_STORAGE, EXACTFULL>/real_time/threads:4_min                                                16939 ns      63116 ns    232108
+create_and_push_and_reserve<RESERVE_STORAGE, EXACTFULL>/real_time/threads:1_min                                                                   38566 ns      38563 ns    107605
+create_and_push_and_reserve<RESERVE_STORAGE, EXACTFULL>/real_time/threads:2_min                                                                   20625 ns      41246 ns    202014
+create_and_push_and_reserve<RESERVE_STORAGE, EXACTFULL>/real_time/threads:4_min                                                                   15325 ns      59551 ns    281960
+create_and_push<absl::InlinedVector <INNER_DATATYPE, CONTAINERSIZE> , RESERVE_STORAGE, EXACTFULL>/real_time/threads:1_min                         39659 ns      39657 ns    102018
+create_and_push<absl::InlinedVector <INNER_DATATYPE, CONTAINERSIZE> , RESERVE_STORAGE, EXACTFULL>/real_time/threads:2_min                         21016 ns      42020 ns    199998
+create_and_push<absl::InlinedVector <INNER_DATATYPE, CONTAINERSIZE> , RESERVE_STORAGE, EXACTFULL>/real_time/threads:4_min                         15978 ns      59493 ns    244080
+create_and_push<llvm::SmallVector <INNER_DATATYPE, CONTAINERSIZE> , RESERVE_STORAGE, EXACTFULL>/real_time/threads:1_min                           29599 ns      29591 ns    132173
+create_and_push<llvm::SmallVector <INNER_DATATYPE, CONTAINERSIZE> , RESERVE_STORAGE, EXACTFULL>/real_time/threads:2_min                           15676 ns      31347 ns    263168
+create_and_push<llvm::SmallVector <INNER_DATATYPE, CONTAINERSIZE> , RESERVE_STORAGE, EXACTFULL>/real_time/threads:4_min                           10056 ns      39494 ns    432404
+create_and_push<boost::container::small_vector <INNER_DATATYPE, CONTAINERSIZE> , RESERVE_STORAGE, EXACTFULL>/real_time/threads:1_min              30614 ns      30613 ns    137033
+create_and_push<boost::container::small_vector <INNER_DATATYPE, CONTAINERSIZE> , RESERVE_STORAGE, EXACTFULL>/real_time/threads:2_min              16103 ns      32202 ns    258458
+create_and_push<boost::container::small_vector <INNER_DATATYPE, CONTAINERSIZE> , RESERVE_STORAGE, EXACTFULL>/real_time/threads:4_min               9706 ns      38282 ns    434884
+create_and_push<boost::container::static_vector<INNER_DATATYPE, CONTAINERSIZE> , RESERVE_STORAGE, EXACTFULL>/real_time/threads:1_min              27919 ns      27913 ns    150537
+create_and_push<boost::container::static_vector<INNER_DATATYPE, CONTAINERSIZE> , RESERVE_STORAGE, EXACTFULL>/real_time/threads:2_min              14798 ns      29593 ns    283702
+create_and_push<boost::container::static_vector<INNER_DATATYPE, CONTAINERSIZE> , RESERVE_STORAGE, EXACTFULL>/real_time/threads:4_min               8763 ns      34787 ns    468676
+create_and_push<std::vector <INNER_DATATYPE> , DONT_RESERVE_STORAGE, UNDERFULL>/real_time/threads:1_min                                           53607 ns      53588 ns     76608
+create_and_push<std::vector <INNER_DATATYPE> , DONT_RESERVE_STORAGE, UNDERFULL>/real_time/threads:2_min                                           28451 ns      56892 ns    147604
+create_and_push<std::vector <INNER_DATATYPE> , DONT_RESERVE_STORAGE, UNDERFULL>/real_time/threads:4_min                                           30132 ns     113796 ns    131052
+create_and_push_and_reserve<DONT_RESERVE_STORAGE, UNDERFULL>/real_time/threads:1_min                                                              29863 ns      29862 ns    136991
+create_and_push_and_reserve<DONT_RESERVE_STORAGE, UNDERFULL>/real_time/threads:2_min                                                              15917 ns      31829 ns    255146
+create_and_push_and_reserve<DONT_RESERVE_STORAGE, UNDERFULL>/real_time/threads:4_min                                                              12105 ns      47633 ns    360044
+create_and_push<absl::InlinedVector <INNER_DATATYPE, CONTAINERSIZE> , DONT_RESERVE_STORAGE, UNDERFULL>/real_time/threads:1_min                    27895 ns      27894 ns    150247
+create_and_push<absl::InlinedVector <INNER_DATATYPE, CONTAINERSIZE> , DONT_RESERVE_STORAGE, UNDERFULL>/real_time/threads:2_min                    14837 ns      29667 ns    283132
+create_and_push<absl::InlinedVector <INNER_DATATYPE, CONTAINERSIZE> , DONT_RESERVE_STORAGE, UNDERFULL>/real_time/threads:4_min                    10678 ns      42158 ns    400096
+create_and_push<llvm::SmallVector <INNER_DATATYPE, CONTAINERSIZE> , DONT_RESERVE_STORAGE, UNDERFULL>/real_time/threads:1_min                      21882 ns      21880 ns    192373
+create_and_push<llvm::SmallVector <INNER_DATATYPE, CONTAINERSIZE> , DONT_RESERVE_STORAGE, UNDERFULL>/real_time/threads:2_min                      11654 ns      23301 ns    362310
+create_and_push<llvm::SmallVector <INNER_DATATYPE, CONTAINERSIZE> , DONT_RESERVE_STORAGE, UNDERFULL>/real_time/threads:4_min                       8164 ns      29658 ns    515240
+create_and_push<boost::container::small_vector <INNER_DATATYPE, CONTAINERSIZE> , DONT_RESERVE_STORAGE, UNDERFULL>/real_time/threads:1_min         23226 ns      23224 ns    175196
+create_and_push<boost::container::small_vector <INNER_DATATYPE, CONTAINERSIZE> , DONT_RESERVE_STORAGE, UNDERFULL>/real_time/threads:2_min         11909 ns      23809 ns    320636
+create_and_push<boost::container::small_vector <INNER_DATATYPE, CONTAINERSIZE> , DONT_RESERVE_STORAGE, UNDERFULL>/real_time/threads:4_min          7736 ns      30279 ns    552024
+create_and_push<boost::container::static_vector<INNER_DATATYPE, CONTAINERSIZE> , DONT_RESERVE_STORAGE, UNDERFULL>/real_time/threads:1_min         19708 ns      19708 ns    211763
+create_and_push<boost::container::static_vector<INNER_DATATYPE, CONTAINERSIZE> , DONT_RESERVE_STORAGE, UNDERFULL>/real_time/threads:2_min         10430 ns      20856 ns    402534
+create_and_push<boost::container::static_vector<INNER_DATATYPE, CONTAINERSIZE> , DONT_RESERVE_STORAGE, UNDERFULL>/real_time/threads:4_min          6444 ns      25495 ns    653536
+create_and_push<std::vector <INNER_DATATYPE> , RESERVE_STORAGE, UNDERFULL>/real_time/threads:1_min                                                29255 ns      29254 ns    133678
+create_and_push<std::vector <INNER_DATATYPE> , RESERVE_STORAGE, UNDERFULL>/real_time/threads:2_min                                                15434 ns      30868 ns    243228
+create_and_push<std::vector <INNER_DATATYPE> , RESERVE_STORAGE, UNDERFULL>/real_time/threads:4_min                                                12846 ns      50803 ns    325596
+create_and_push_and_reserve<RESERVE_STORAGE, UNDERFULL>/real_time/threads:1_min                                                                   29296 ns      29294 ns    125008
+create_and_push_and_reserve<RESERVE_STORAGE, UNDERFULL>/real_time/threads:2_min                                                                   16128 ns      32250 ns    207108
+create_and_push_and_reserve<RESERVE_STORAGE, UNDERFULL>/real_time/threads:4_min                                                                   13217 ns      52160 ns    312832
+create_and_push<absl::InlinedVector <INNER_DATATYPE, CONTAINERSIZE> , RESERVE_STORAGE, UNDERFULL>/real_time/threads:1_min                         27954 ns      27947 ns    145199
+create_and_push<absl::InlinedVector <INNER_DATATYPE, CONTAINERSIZE> , RESERVE_STORAGE, UNDERFULL>/real_time/threads:2_min                         14871 ns      29737 ns    257514
+create_and_push<absl::InlinedVector <INNER_DATATYPE, CONTAINERSIZE> , RESERVE_STORAGE, UNDERFULL>/real_time/threads:4_min                         11005 ns      42873 ns    400204
+create_and_push<llvm::SmallVector <INNER_DATATYPE, CONTAINERSIZE> , RESERVE_STORAGE, UNDERFULL>/real_time/threads:1_min                           21731 ns      21725 ns    192508
+create_and_push<llvm::SmallVector <INNER_DATATYPE, CONTAINERSIZE> , RESERVE_STORAGE, UNDERFULL>/real_time/threads:2_min                           11537 ns      23072 ns    363784
+create_and_push<llvm::SmallVector <INNER_DATATYPE, CONTAINERSIZE> , RESERVE_STORAGE, UNDERFULL>/real_time/threads:4_min                            7602 ns      29156 ns    588252
+create_and_push<boost::container::small_vector <INNER_DATATYPE, CONTAINERSIZE> , RESERVE_STORAGE, UNDERFULL>/real_time/threads:1_min              22895 ns      22894 ns    174988
+create_and_push<boost::container::small_vector <INNER_DATATYPE, CONTAINERSIZE> , RESERVE_STORAGE, UNDERFULL>/real_time/threads:2_min              11966 ns      23927 ns    350914
+create_and_push<boost::container::small_vector <INNER_DATATYPE, CONTAINERSIZE> , RESERVE_STORAGE, UNDERFULL>/real_time/threads:4_min               7338 ns      28995 ns    568200
+create_and_push<boost::container::static_vector<INNER_DATATYPE, CONTAINERSIZE> , RESERVE_STORAGE, UNDERFULL>/real_time/threads:1_min              19688 ns      19687 ns    213072
+create_and_push<boost::container::static_vector<INNER_DATATYPE, CONTAINERSIZE> , RESERVE_STORAGE, UNDERFULL>/real_time/threads:2_min              10446 ns      20890 ns    402690
+create_and_push<boost::container::static_vector<INNER_DATATYPE, CONTAINERSIZE> , RESERVE_STORAGE, UNDERFULL>/real_time/threads:4_min               6577 ns      24803 ns    608552
+create_and_push<std::vector <INNER_DATATYPE> , DONT_RESERVE_STORAGE, OVERFULL>/real_time/threads:1_min                                            77550 ns      77530 ns     51432
+create_and_push<std::vector <INNER_DATATYPE> , DONT_RESERVE_STORAGE, OVERFULL>/real_time/threads:2_min                                            41058 ns      82100 ns    102524
+create_and_push<std::vector <INNER_DATATYPE> , DONT_RESERVE_STORAGE, OVERFULL>/real_time/threads:4_min                                            42248 ns     154827 ns     96164
+create_and_push_and_reserve<DONT_RESERVE_STORAGE, OVERFULL>/real_time/threads:1_min                                                               52813 ns      52809 ns     68834
+create_and_push_and_reserve<DONT_RESERVE_STORAGE, OVERFULL>/real_time/threads:2_min                                                               29099 ns      58180 ns    151538
+create_and_push_and_reserve<DONT_RESERVE_STORAGE, OVERFULL>/real_time/threads:4_min                                                               24011 ns      94720 ns    170868
+create_and_push<absl::InlinedVector <INNER_DATATYPE, CONTAINERSIZE> , DONT_RESERVE_STORAGE, OVERFULL>/real_time/threads:1_min                     55530 ns      55515 ns     73562
+create_and_push<absl::InlinedVector <INNER_DATATYPE, CONTAINERSIZE> , DONT_RESERVE_STORAGE, OVERFULL>/real_time/threads:2_min                     29392 ns      58774 ns    142636
+create_and_push<absl::InlinedVector <INNER_DATATYPE, CONTAINERSIZE> , DONT_RESERVE_STORAGE, OVERFULL>/real_time/threads:4_min                     22529 ns      89122 ns    188312
+create_and_push<llvm::SmallVector <INNER_DATATYPE, CONTAINERSIZE> , DONT_RESERVE_STORAGE, OVERFULL>/real_time/threads:1_min                       42603 ns      42601 ns     97340
+create_and_push<llvm::SmallVector <INNER_DATATYPE, CONTAINERSIZE> , DONT_RESERVE_STORAGE, OVERFULL>/real_time/threads:2_min                       22433 ns      44854 ns    185648
+create_and_push<llvm::SmallVector <INNER_DATATYPE, CONTAINERSIZE> , DONT_RESERVE_STORAGE, OVERFULL>/real_time/threads:4_min                       15865 ns      62762 ns    270140
+create_and_push<boost::container::small_vector <INNER_DATATYPE, CONTAINERSIZE> , DONT_RESERVE_STORAGE, OVERFULL>/real_time/threads:1_min          43683 ns      43672 ns     95354
+create_and_push<boost::container::small_vector <INNER_DATATYPE, CONTAINERSIZE> , DONT_RESERVE_STORAGE, OVERFULL>/real_time/threads:2_min          23140 ns      46276 ns    179042
+create_and_push<boost::container::small_vector <INNER_DATATYPE, CONTAINERSIZE> , DONT_RESERVE_STORAGE, OVERFULL>/real_time/threads:4_min          15272 ns      60070 ns    285388
+create_and_push<std::vector <INNER_DATATYPE> , RESERVE_STORAGE, OVERFULL>/real_time/threads:1_min                                                 46396 ns      46395 ns     90785
+create_and_push<std::vector <INNER_DATATYPE> , RESERVE_STORAGE, OVERFULL>/real_time/threads:2_min                                                 24534 ns      49056 ns    171168
+create_and_push<std::vector <INNER_DATATYPE> , RESERVE_STORAGE, OVERFULL>/real_time/threads:4_min                                                 20163 ns      79541 ns    210508
+create_and_push_and_reserve<RESERVE_STORAGE, OVERFULL>/real_time/threads:1_min                                                                    51580 ns      51578 ns     77910
+create_and_push_and_reserve<RESERVE_STORAGE, OVERFULL>/real_time/threads:2_min                                                                    27306 ns      54609 ns    151194
+create_and_push_and_reserve<RESERVE_STORAGE, OVERFULL>/real_time/threads:4_min                                                                    23765 ns      86691 ns    178952
+create_and_push<absl::InlinedVector <INNER_DATATYPE, CONTAINERSIZE> , RESERVE_STORAGE, OVERFULL>/real_time/threads:1_min                          52218 ns      52215 ns     72106
+create_and_push<absl::InlinedVector <INNER_DATATYPE, CONTAINERSIZE> , RESERVE_STORAGE, OVERFULL>/real_time/threads:2_min                          27651 ns      55298 ns    151694
+create_and_push<absl::InlinedVector <INNER_DATATYPE, CONTAINERSIZE> , RESERVE_STORAGE, OVERFULL>/real_time/threads:4_min                          20212 ns      79880 ns    211732
+create_and_push<llvm::SmallVector <INNER_DATATYPE, CONTAINERSIZE> , RESERVE_STORAGE, OVERFULL>/real_time/threads:1_min                            43120 ns      43109 ns     96527
+create_and_push<llvm::SmallVector <INNER_DATATYPE, CONTAINERSIZE> , RESERVE_STORAGE, OVERFULL>/real_time/threads:2_min                            22837 ns      45665 ns    180536
+create_and_push<llvm::SmallVector <INNER_DATATYPE, CONTAINERSIZE> , RESERVE_STORAGE, OVERFULL>/real_time/threads:4_min                            15530 ns      61557 ns    271524
+create_and_push<boost::container::small_vector <INNER_DATATYPE, CONTAINERSIZE> , RESERVE_STORAGE, OVERFULL>/real_time/threads:1_min               42996 ns      42993 ns     97740
+create_and_push<boost::container::small_vector <INNER_DATATYPE, CONTAINERSIZE> , RESERVE_STORAGE, OVERFULL>/real_time/threads:2_min               22930 ns      45854 ns    182462
+create_and_push<boost::container::small_vector <INNER_DATATYPE, CONTAINERSIZE> , RESERVE_STORAGE, OVERFULL>/real_time/threads:4_min               14788 ns      57485 ns    296864
