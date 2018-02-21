@@ -5,7 +5,10 @@
 #include <llvm/ADT/SmallVector.h>
 #include <vector>
 
-constexpr static int CONTAINERSIZE = 30;
+#include <boost/random/taus88.hpp>
+boost::random::taus88 random_gen;
+
+constexpr static int CONTAINERSIZE = 13;
 constexpr static int FILLING_OFFSET = 8;
 typedef int INNER_DATATYPE;
 constexpr static int N_BIGTHINGS = 100;
@@ -18,15 +21,16 @@ enum filling { EXACTFULL, UNDERFULL, OVERFULL };
 constexpr bool RESERVE_STORAGE      = true;
 constexpr bool DONT_RESERVE_STORAGE = false;
 
-constexpr int get_loopend( filling PICKED_FILLING )
+size_t get_loopend( filling PICKED_FILLING )
 {
   if ( EXACTFULL == PICKED_FILLING ) return CONTAINERSIZE;
-  if ( UNDERFULL == PICKED_FILLING ) return CONTAINERSIZE - FILLING_OFFSET;
-  if ( OVERFULL == PICKED_FILLING ) return CONTAINERSIZE + FILLING_OFFSET;
+  if ( UNDERFULL == PICKED_FILLING ) return CONTAINERSIZE - random_gen() % FILLING_OFFSET;
+  if ( OVERFULL  == PICKED_FILLING ) return CONTAINERSIZE + random_gen() % FILLING_OFFSET;
+  return 0;
 }
 
 template <typename CONTAINER, bool RESERVE>
-inline void reserve_on_compile_demand( typename std::enable_if<RESERVE, CONTAINER>::type& asdf, int loopend )
+inline void reserve_on_compile_demand( typename std::enable_if<RESERVE, CONTAINER>::type& asdf, size_t loopend )
 {
   asdf.reserve( loopend );
 }
@@ -39,7 +43,7 @@ inline void reserve_on_compile_demand( typename std::enable_if<!RESERVE, CONTAIN
 template <typename CONTAINER, bool RESERVE, filling PICKED_FILLING>
 struct bigthing {
   bigthing(size_t N) {
-    constexpr int loopend = get_loopend( PICKED_FILLING );
+    size_t loopend = get_loopend( PICKED_FILLING );
     reserve_on_compile_demand<CONTAINER, RESERVE>( m_collection, loopend );
     for ( size_t i = 0; i < loopend; i++ ) {
       m_collection.push_back(N%(1+i));
@@ -70,7 +74,7 @@ template <bool RESERVE, filling PICKED_FILLING>
 struct reservething {
   reservething(size_t N) {
     m_collection.reserve( CONTAINERSIZE );
-    constexpr int loopend = get_loopend( PICKED_FILLING );
+    size_t loopend = get_loopend( PICKED_FILLING );
     reserve_on_compile_demand<decltype(m_collection), RESERVE>( m_collection, loopend );
     for ( size_t i = 0; i < loopend; i++ ) {
       m_collection.push_back(N%(1+i));

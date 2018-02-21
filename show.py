@@ -3,7 +3,7 @@ import re
 import numpy as np
 
 
-with open("multi_bench_complex.log", "r") as f:
+with open("multi_bench_complex2.log", "r") as f:
     loglines = [line.split(" ns") for line in f.readlines() if re.match("create.*", line)]
 
 grab_name = re.compile("_min *[0-9]*")
