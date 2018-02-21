@@ -28,7 +28,7 @@ inline void reserve_on_compile_demand( typename std::enable_if<RESERVE, CONTAINE
 }
 
 template <typename CONTAINER, bool RESERVE>
-inline void reserve_on_compile_demand( typename std::enable_if<!RESERVE, CONTAINER>::type& asdf, int loopend )
+inline void reserve_on_compile_demand( typename std::enable_if<!RESERVE, CONTAINER>::type&, int )
 {
 }
 
