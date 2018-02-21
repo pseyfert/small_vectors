@@ -21,13 +21,24 @@ constexpr int get_loopend( filling PICKED_FILLING )
   if ( OVERFULL == PICKED_FILLING ) return CONTAINERSIZE + FILLING_OFFSET;
 }
 
+template <typename CONTAINER, bool RESERVE>
+inline void reserve_on_compile_demand( typename std::enable_if<RESERVE, CONTAINER>::type& asdf, int loopend )
+{
+  asdf.reserve( loopend );
+}
+
+template <typename CONTAINER, bool RESERVE>
+inline void reserve_on_compile_demand( typename std::enable_if<!RESERVE, CONTAINER>::type& asdf, int loopend )
+{
+}
+
 template <typename CONTAINER, bool RESERVE, filling PICKED_FILLING>
 static void create_and_push( benchmark::State& state )
 {
   for ( auto _ : state ) {
     CONTAINER asdf;
     constexpr int loopend = get_loopend( PICKED_FILLING );
-    if ( RESERVE ) asdf.reserve( loopend );
+    reserve_on_compile_demand<CONTAINER, RESERVE>( asdf, loopend );
     for ( size_t i = 0; i < loopend; i++ ) {
       asdf.push_back( i );
     }
@@ -42,7 +53,7 @@ static void reserve( benchmark::State& state )
     std::vector<DATATYPE> asdf;
     asdf.reserve( CONTAINERSIZE );
     constexpr int loopend = get_loopend( PICKED_FILLING );
-    if ( RESERVE ) asdf.reserve( loopend );
+    reserve_on_compile_demand<decltype(asdf), RESERVE>( asdf, loopend );
     for ( size_t i = 0; i < loopend; i++ ) {
       asdf.push_back( i );
     }
