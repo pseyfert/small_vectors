@@ -1,37 +1,28 @@
-~/coding/small_vector > ./complex_bench --benchmark_min_time=10 --benchmark_repetitions=10 --benchmark_report_aggregates_only=true                                                                     
-2018-02-20 20:06:21
-Run on (4 X 3200 MHz CPU s)
-CPU Caches:
-  L1 Data 32K (x2)
-  L1 Instruction 32K (x2)
-  L2 Unified 256K (x2)
-  L3 Unified 3072K (x1)
-***WARNING*** CPU scaling is enabled, the benchmark real time measurements may be noisy and will incur extra overhead.
 --------------------------------------------------------------------------
 Benchmark                                   Time           CPU Iterations
 --------------------------------------------------------------------------
-test_std_vector_mean                    22880 ns      22879 ns     621427
-test_std_vector_median                  22765 ns      22764 ns     621427
-test_std_vector_stddev                    363 ns        362 ns     621427
-test_std_vector_min                     22589 ns      22587 ns     621427
-test_boost_small_vector_mean             2412 ns       2412 ns    5826431
-test_boost_small_vector_median           2412 ns       2412 ns    5826431
-test_boost_small_vector_stddev              3 ns          3 ns    5826431
-test_boost_small_vector_min              2406 ns       2406 ns    5826431
-test_boost_static_vector_mean            1663 ns       1663 ns    8572703
-test_boost_static_vector_median          1644 ns       1644 ns    8572703
-test_boost_static_vector_stddev            33 ns         33 ns    8572703
-test_boost_static_vector_min             1633 ns       1633 ns    8572703
-test_llvm_small_vector_mean              3744 ns       3743 ns    3747365
-test_llvm_small_vector_median            3743 ns       3742 ns    3747365
-test_llvm_small_vector_stddev              17 ns         17 ns    3747365
-test_llvm_small_vector_min               3725 ns       3725 ns    3747365
-test_absl_inline_vector_mean             6634 ns       6632 ns    2115585
-test_absl_inline_vector_median           6623 ns       6621 ns    2115585
-test_absl_inline_vector_stddev             34 ns         34 ns    2115585
-test_absl_inline_vector_min              6603 ns       6601 ns    2115585
-create_and_push_and_reserve_mean         7180 ns       7178 ns    1999907
-create_and_push_and_reserve_median       7170 ns       7169 ns    1999907
-create_and_push_and_reserve_stddev        182 ns        181 ns    1999907
-create_and_push_and_reserve_min          6947 ns       6945 ns    1999907
-
+[0;32mtest_std_vector_mean               [m[0;33m     61527 ns      61494 ns [m[0;36m    234565[m
+[m[0;32mtest_std_vector_median             [m[0;33m     60791 ns      60765 ns [m[0;36m    234565[m
+[m[0;32mtest_std_vector_stddev             [m[0;33m      6141 ns       6108 ns [m[0;36m    234565[m
+[m[0;32mtest_std_vector_min                [m[0;33m     56559 ns      56554 ns [m[0;36m    234565[m
+[m[0;32mtest_boost_small_vector_mean       [m[0;33m     32161 ns      32151 ns [m[0;36m    441741[m
+[m[0;32mtest_boost_small_vector_median     [m[0;33m     32064 ns      32052 ns [m[0;36m    441741[m
+[m[0;32mtest_boost_small_vector_stddev     [m[0;33m       390 ns        389 ns [m[0;36m    441741[m
+[m[0;32mtest_boost_small_vector_min        [m[0;33m     31719 ns      31717 ns [m[0;36m    441741[m
+[m[0;32mtest_boost_static_vector_mean      [m[0;33m     29385 ns      29380 ns [m[0;36m    484377[m
+[m[0;32mtest_boost_static_vector_median    [m[0;33m     29008 ns      28999 ns [m[0;36m    484377[m
+[m[0;32mtest_boost_static_vector_stddev    [m[0;33m       729 ns        728 ns [m[0;36m    484377[m
+[m[0;32mtest_boost_static_vector_min       [m[0;33m     28792 ns      28790 ns [m[0;36m    484377[m
+[m[0;32mtest_llvm_small_vector_mean        [m[0;33m     31438 ns      31432 ns [m[0;36m    448929[m
+[m[0;32mtest_llvm_small_vector_median      [m[0;33m     31217 ns      31213 ns [m[0;36m    448929[m
+[m[0;32mtest_llvm_small_vector_stddev      [m[0;33m       685 ns        685 ns [m[0;36m    448929[m
+[m[0;32mtest_llvm_small_vector_min         [m[0;33m     30563 ns      30560 ns [m[0;36m    448929[m
+[m[0;32mtest_absl_inline_vector_mean       [m[0;33m     39222 ns      39206 ns [m[0;36m    340270[m
+[m[0;32mtest_absl_inline_vector_median     [m[0;33m     38491 ns      38478 ns [m[0;36m    340270[m
+[m[0;32mtest_absl_inline_vector_stddev     [m[0;33m      1242 ns       1240 ns [m[0;36m    340270[m
+[m[0;32mtest_absl_inline_vector_min        [m[0;33m     38171 ns      38169 ns [m[0;36m    340270[m
+[m[0;32mcreate_and_push_and_reserve_mean   [m[0;33m     44910 ns      44901 ns [m[0;36m    296720[m
+[m[0;32mcreate_and_push_and_reserve_median [m[0;33m     44859 ns      44855 ns [m[0;36m    296720[m
+[m[0;32mcreate_and_push_and_reserve_stddev [m[0;33m       769 ns        775 ns [m[0;36m    296720[m
+[m[0;32mcreate_and_push_and_reserve_min    [m[0;33m     43914 ns      43892 ns [m[0;36m    296720[m
+[m
