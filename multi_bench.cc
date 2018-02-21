@@ -5,27 +5,45 @@
 #include <llvm/ADT/SmallVector.h>
 #include <vector>
 
-constexpr static int CONTAINERSIZE = 30;
+constexpr static int CONTAINERSIZE  = 30;
+constexpr static int FILLING_OFFSET = 8;
 typedef int DATATYPE;
 
-template <typename CONTAINER>
+enum filling { EXACTFULL, UNDERFULL, OVERFULL };
+
+constexpr bool RESERVE_STORAGE      = true;
+constexpr bool DONT_RESERVE_STORAGE = false;
+
+constexpr int get_loopend( filling PICKED_FILLING )
+{
+  if ( EXACTFULL == PICKED_FILLING ) return CONTAINERSIZE;
+  if ( UNDERFULL == PICKED_FILLING ) return CONTAINERSIZE - FILLING_OFFSET;
+  if ( OVERFULL == PICKED_FILLING ) return CONTAINERSIZE + FILLING_OFFSET;
+}
+
+template <typename CONTAINER, bool RESERVE, filling PICKED_FILLING>
 static void create_and_push( benchmark::State& state )
 {
   for ( auto _ : state ) {
     CONTAINER asdf;
-    for ( size_t i = 0; i < CONTAINERSIZE; i++ ) {
+    constexpr int loopend = get_loopend( PICKED_FILLING );
+    if ( RESERVE ) asdf.reserve( loopend );
+    for ( size_t i = 0; i < loopend; i++ ) {
       asdf.push_back( i );
     }
     benchmark::ClobberMemory();
   }
 }
 
-static void RESERVE( benchmark::State& state )
+template <bool RESERVE, filling PICKED_FILLING>
+static void reserve( benchmark::State& state )
 {
   for ( auto _ : state ) {
     std::vector<DATATYPE> asdf;
     asdf.reserve( CONTAINERSIZE );
-    for ( size_t i = 0; i < CONTAINERSIZE; i++ ) {
+    constexpr int loopend = get_loopend( PICKED_FILLING );
+    if ( RESERVE ) asdf.reserve( loopend );
+    for ( size_t i = 0; i < loopend; i++ ) {
       asdf.push_back( i );
     }
     benchmark::ClobberMemory();
@@ -36,11 +54,48 @@ auto compute_min = []( const std::vector<double>& v ) -> double {
   return *( std::min_element( std::begin( v ), std::end( v ) ) );
 };
 
-BENCHMARK_TEMPLATE( create_and_push, std::vector                    <DATATYPE               > )->ComputeStatistics( "min", compute_min )->ThreadRange(1,4);
-BENCHMARK_TEMPLATE( create_and_push, boost::container::small_vector <DATATYPE, CONTAINERSIZE> )->ComputeStatistics( "min", compute_min )->ThreadRange(1,4);
-BENCHMARK_TEMPLATE( create_and_push, boost::container::static_vector<DATATYPE, CONTAINERSIZE> )->ComputeStatistics( "min", compute_min )->ThreadRange(1,4);
-BENCHMARK_TEMPLATE( create_and_push, llvm::SmallVector              <DATATYPE, CONTAINERSIZE> )->ComputeStatistics( "min", compute_min )->ThreadRange(1,4);
-BENCHMARK_TEMPLATE( create_and_push, absl::InlinedVector            <DATATYPE, CONTAINERSIZE> )->ComputeStatistics( "min", compute_min )->ThreadRange(1,4);
-BENCHMARK(          RESERVE                                                                   )->ComputeStatistics( "min", compute_min )->ThreadRange(1,4);
+BENCHMARK_TEMPLATE( create_and_push, std::vector                    <DATATYPE>                , DONT_RESERVE_STORAGE, EXACTFULL)->ComputeStatistics( "min", compute_min )->ThreadRange( 1, 4 )->UseRealTime();
+BENCHMARK_TEMPLATE( reserve                                                                   , DONT_RESERVE_STORAGE, EXACTFULL)->ComputeStatistics( "min", compute_min )->ThreadRange( 1, 4 )->UseRealTime();
+BENCHMARK_TEMPLATE( create_and_push, absl::InlinedVector            <DATATYPE, CONTAINERSIZE> , DONT_RESERVE_STORAGE, EXACTFULL)->ComputeStatistics( "min", compute_min )->ThreadRange( 1, 4 )->UseRealTime();
+BENCHMARK_TEMPLATE( create_and_push, llvm::SmallVector              <DATATYPE, CONTAINERSIZE> , DONT_RESERVE_STORAGE, EXACTFULL)->ComputeStatistics( "min", compute_min )->ThreadRange( 1, 4 )->UseRealTime();
+BENCHMARK_TEMPLATE( create_and_push, boost::container::small_vector <DATATYPE, CONTAINERSIZE> , DONT_RESERVE_STORAGE, EXACTFULL)->ComputeStatistics( "min", compute_min )->ThreadRange( 1, 4 )->UseRealTime();
+BENCHMARK_TEMPLATE( create_and_push, boost::container::static_vector<DATATYPE, CONTAINERSIZE> , DONT_RESERVE_STORAGE, EXACTFULL)->ComputeStatistics( "min", compute_min )->ThreadRange( 1, 4 )->UseRealTime();
+
+BENCHMARK_TEMPLATE( create_and_push, std::vector                    <DATATYPE>                ,      RESERVE_STORAGE, EXACTFULL)->ComputeStatistics( "min", compute_min )->ThreadRange( 1, 4 )->UseRealTime();
+BENCHMARK_TEMPLATE( reserve                                                                   ,      RESERVE_STORAGE, EXACTFULL)->ComputeStatistics( "min", compute_min )->ThreadRange( 1, 4 )->UseRealTime();
+BENCHMARK_TEMPLATE( create_and_push, absl::InlinedVector            <DATATYPE, CONTAINERSIZE> ,      RESERVE_STORAGE, EXACTFULL)->ComputeStatistics( "min", compute_min )->ThreadRange( 1, 4 )->UseRealTime();
+BENCHMARK_TEMPLATE( create_and_push, llvm::SmallVector              <DATATYPE, CONTAINERSIZE> ,      RESERVE_STORAGE, EXACTFULL)->ComputeStatistics( "min", compute_min )->ThreadRange( 1, 4 )->UseRealTime();
+BENCHMARK_TEMPLATE( create_and_push, boost::container::small_vector <DATATYPE, CONTAINERSIZE> ,      RESERVE_STORAGE, EXACTFULL)->ComputeStatistics( "min", compute_min )->ThreadRange( 1, 4 )->UseRealTime();
+BENCHMARK_TEMPLATE( create_and_push, boost::container::static_vector<DATATYPE, CONTAINERSIZE> ,      RESERVE_STORAGE, EXACTFULL)->ComputeStatistics( "min", compute_min )->ThreadRange( 1, 4 )->UseRealTime();
+
+BENCHMARK_TEMPLATE( create_and_push, std::vector                    <DATATYPE>                , DONT_RESERVE_STORAGE, UNDERFULL)->ComputeStatistics( "min", compute_min )->ThreadRange( 1, 4 )->UseRealTime();
+BENCHMARK_TEMPLATE( reserve                                                                   , DONT_RESERVE_STORAGE, UNDERFULL)->ComputeStatistics( "min", compute_min )->ThreadRange( 1, 4 )->UseRealTime();
+BENCHMARK_TEMPLATE( create_and_push, absl::InlinedVector            <DATATYPE, CONTAINERSIZE> , DONT_RESERVE_STORAGE, UNDERFULL)->ComputeStatistics( "min", compute_min )->ThreadRange( 1, 4 )->UseRealTime();
+BENCHMARK_TEMPLATE( create_and_push, llvm::SmallVector              <DATATYPE, CONTAINERSIZE> , DONT_RESERVE_STORAGE, UNDERFULL)->ComputeStatistics( "min", compute_min )->ThreadRange( 1, 4 )->UseRealTime();
+BENCHMARK_TEMPLATE( create_and_push, boost::container::small_vector <DATATYPE, CONTAINERSIZE> , DONT_RESERVE_STORAGE, UNDERFULL)->ComputeStatistics( "min", compute_min )->ThreadRange( 1, 4 )->UseRealTime();
+BENCHMARK_TEMPLATE( create_and_push, boost::container::static_vector<DATATYPE, CONTAINERSIZE> , DONT_RESERVE_STORAGE, UNDERFULL)->ComputeStatistics( "min", compute_min )->ThreadRange( 1, 4 )->UseRealTime();
+
+BENCHMARK_TEMPLATE( create_and_push, std::vector                    <DATATYPE>                ,      RESERVE_STORAGE, UNDERFULL)->ComputeStatistics( "min", compute_min )->ThreadRange( 1, 4 )->UseRealTime();
+BENCHMARK_TEMPLATE( reserve                                                                   ,      RESERVE_STORAGE, UNDERFULL)->ComputeStatistics( "min", compute_min )->ThreadRange( 1, 4 )->UseRealTime();
+BENCHMARK_TEMPLATE( create_and_push, absl::InlinedVector            <DATATYPE, CONTAINERSIZE> ,      RESERVE_STORAGE, UNDERFULL)->ComputeStatistics( "min", compute_min )->ThreadRange( 1, 4 )->UseRealTime();
+BENCHMARK_TEMPLATE( create_and_push, llvm::SmallVector              <DATATYPE, CONTAINERSIZE> ,      RESERVE_STORAGE, UNDERFULL)->ComputeStatistics( "min", compute_min )->ThreadRange( 1, 4 )->UseRealTime();
+BENCHMARK_TEMPLATE( create_and_push, boost::container::small_vector <DATATYPE, CONTAINERSIZE> ,      RESERVE_STORAGE, UNDERFULL)->ComputeStatistics( "min", compute_min )->ThreadRange( 1, 4 )->UseRealTime();
+BENCHMARK_TEMPLATE( create_and_push, boost::container::static_vector<DATATYPE, CONTAINERSIZE> ,      RESERVE_STORAGE, UNDERFULL)->ComputeStatistics( "min", compute_min )->ThreadRange( 1, 4 )->UseRealTime();
+
+BENCHMARK_TEMPLATE( create_and_push, std::vector                    <DATATYPE>                , DONT_RESERVE_STORAGE, OVERFULL )->ComputeStatistics( "min", compute_min )->ThreadRange( 1, 4 )->UseRealTime();
+BENCHMARK_TEMPLATE( reserve                                                                   , DONT_RESERVE_STORAGE, OVERFULL )->ComputeStatistics( "min", compute_min )->ThreadRange( 1, 4 )->UseRealTime();
+BENCHMARK_TEMPLATE( create_and_push, absl::InlinedVector            <DATATYPE, CONTAINERSIZE> , DONT_RESERVE_STORAGE, OVERFULL )->ComputeStatistics( "min", compute_min )->ThreadRange( 1, 4 )->UseRealTime();
+BENCHMARK_TEMPLATE( create_and_push, llvm::SmallVector              <DATATYPE, CONTAINERSIZE> , DONT_RESERVE_STORAGE, OVERFULL )->ComputeStatistics( "min", compute_min )->ThreadRange( 1, 4 )->UseRealTime();
+BENCHMARK_TEMPLATE( create_and_push, boost::container::small_vector <DATATYPE, CONTAINERSIZE> , DONT_RESERVE_STORAGE, OVERFULL )->ComputeStatistics( "min", compute_min )->ThreadRange( 1, 4 )->UseRealTime();
+//BENCHMARK_TEMPLATE( create_and_push, boost::container::static_vector<DATATYPE, CONTAINERSIZE> , DONT_RESERVE_STORAGE, OVERFULL )->ComputeStatistics( "min", compute_min )->ThreadRange( 1, 4 )->UseRealTime();
+
+BENCHMARK_TEMPLATE( create_and_push, std::vector                    <DATATYPE>                ,      RESERVE_STORAGE, OVERFULL )->ComputeStatistics( "min", compute_min )->ThreadRange( 1, 4 )->UseRealTime();
+BENCHMARK_TEMPLATE( reserve                                                                   ,      RESERVE_STORAGE, OVERFULL )->ComputeStatistics( "min", compute_min )->ThreadRange( 1, 4 )->UseRealTime();
+BENCHMARK_TEMPLATE( create_and_push, absl::InlinedVector            <DATATYPE, CONTAINERSIZE> ,      RESERVE_STORAGE, OVERFULL )->ComputeStatistics( "min", compute_min )->ThreadRange( 1, 4 )->UseRealTime();
+BENCHMARK_TEMPLATE( create_and_push, llvm::SmallVector              <DATATYPE, CONTAINERSIZE> ,      RESERVE_STORAGE, OVERFULL )->ComputeStatistics( "min", compute_min )->ThreadRange( 1, 4 )->UseRealTime();
+BENCHMARK_TEMPLATE( create_and_push, boost::container::small_vector <DATATYPE, CONTAINERSIZE> ,      RESERVE_STORAGE, OVERFULL )->ComputeStatistics( "min", compute_min )->ThreadRange( 1, 4 )->UseRealTime();
+//BENCHMARK_TEMPLATE( create_and_push, boost::container::static_vector<DATATYPE, CONTAINERSIZE> ,      RESERVE_STORAGE, OVERFULL )->ComputeStatistics( "min", compute_min )->ThreadRange( 1, 4 )->UseRealTime();
+
+
 
 BENCHMARK_MAIN();
