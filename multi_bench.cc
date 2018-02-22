@@ -5,7 +5,10 @@
 #include <llvm/ADT/SmallVector.h>
 #include <vector>
 
-constexpr static int CONTAINERSIZE  = 30;
+#include <boost/random/taus88.hpp>
+boost::random::taus88 random_gen;
+
+constexpr static int CONTAINERSIZE = 13;
 constexpr static int FILLING_OFFSET = 8;
 typedef int DATATYPE;
 
@@ -14,15 +17,16 @@ enum filling { EXACTFULL, UNDERFULL, OVERFULL };
 constexpr bool RESERVE_STORAGE      = true;
 constexpr bool DONT_RESERVE_STORAGE = false;
 
-constexpr int get_loopend( filling PICKED_FILLING )
+inline size_t get_loopend( filling PICKED_FILLING )
 {
   if ( EXACTFULL == PICKED_FILLING ) return CONTAINERSIZE;
-  if ( UNDERFULL == PICKED_FILLING ) return CONTAINERSIZE - FILLING_OFFSET;
-  if ( OVERFULL == PICKED_FILLING ) return CONTAINERSIZE + FILLING_OFFSET;
+  if ( UNDERFULL == PICKED_FILLING ) return CONTAINERSIZE - random_gen() % FILLING_OFFSET;
+  if ( OVERFULL  == PICKED_FILLING ) return CONTAINERSIZE + random_gen() % FILLING_OFFSET;
+  return 0;
 }
 
 template <typename CONTAINER, bool RESERVE>
-inline void reserve_on_compile_demand( typename std::enable_if<RESERVE, CONTAINER>::type& asdf, int loopend )
+inline void reserve_on_compile_demand( typename std::enable_if<RESERVE, CONTAINER>::type& asdf, size_t loopend )
 {
   asdf.reserve( loopend );
 }
@@ -37,10 +41,10 @@ static void create_and_push( benchmark::State& state )
 {
   for ( auto _ : state ) {
     CONTAINER asdf;
-    constexpr int loopend = get_loopend( PICKED_FILLING );
+    size_t loopend = get_loopend( PICKED_FILLING );
     reserve_on_compile_demand<CONTAINER, RESERVE>( asdf, loopend );
     for ( size_t i = 0; i < loopend; i++ ) {
-      asdf.push_back( i );
+      asdf.push_back( random_gen() );
     }
     benchmark::ClobberMemory();
   }
@@ -52,10 +56,10 @@ static void reserve( benchmark::State& state )
   for ( auto _ : state ) {
     std::vector<DATATYPE> asdf;
     asdf.reserve( CONTAINERSIZE );
-    constexpr int loopend = get_loopend( PICKED_FILLING );
+    size_t loopend = get_loopend( PICKED_FILLING );
     reserve_on_compile_demand<decltype(asdf), RESERVE>( asdf, loopend );
     for ( size_t i = 0; i < loopend; i++ ) {
-      asdf.push_back( i );
+      asdf.push_back( random_gen() );
     }
     benchmark::ClobberMemory();
   }
@@ -106,7 +110,6 @@ BENCHMARK_TEMPLATE( create_and_push, absl::InlinedVector            <DATATYPE, C
 BENCHMARK_TEMPLATE( create_and_push, llvm::SmallVector              <DATATYPE, CONTAINERSIZE> ,      RESERVE_STORAGE, OVERFULL )->ComputeStatistics( "min", compute_min )->ThreadRange( 1, 4 )->UseRealTime();
 BENCHMARK_TEMPLATE( create_and_push, boost::container::small_vector <DATATYPE, CONTAINERSIZE> ,      RESERVE_STORAGE, OVERFULL )->ComputeStatistics( "min", compute_min )->ThreadRange( 1, 4 )->UseRealTime();
 //BENCHMARK_TEMPLATE( create_and_push, boost::container::static_vector<DATATYPE, CONTAINERSIZE> ,      RESERVE_STORAGE, OVERFULL )->ComputeStatistics( "min", compute_min )->ThreadRange( 1, 4 )->UseRealTime();
-
 
 
 BENCHMARK_MAIN();

@@ -3,8 +3,9 @@ import re
 import numpy as np
 
 
-with open("multi_bench_complex2.log", "r") as f:
-    loglines = [line.split(" ns") for line in f.readlines() if re.match("create.*", line)]
+#with open("multi_bench_complex2.log", "r") as f:
+with open("multi_bench.log", "r") as f:
+    loglines = [line.split(" ns") for line in f.readlines() if re.match("create.*_min", line) or re.match("reserve.*_min", line)]
 
 grab_name = re.compile("_min *[0-9]*")
 config_to_time = dict()
@@ -49,9 +50,9 @@ for key in config_to_time.keys():
     if exact_reserve:
         container_name += "::reserve(rightsize)"
 
-    #if underfull:
+    if underfull:
     #if exactfill:
-    if overfull:
+    #if overfull:
         if container_name is None:
             print("PANIC")
             continue
@@ -61,9 +62,9 @@ for key in config_to_time.keys():
             container_to_speeds[container_name] = {
                 N_threads: config_to_time[key]
                 }
-    #if underfull and container_name == "std::vector":
+    if underfull and container_name == "std::vector":
     #if exactfill and container_name == "std::vector":
-    if overfull and container_name == "std::vector":
+    #if overfull and container_name == "std::vector":
         reference_speeds[N_threads] = config_to_time[key]
 
 container_to_speedups = {}

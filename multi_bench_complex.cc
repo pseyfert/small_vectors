@@ -21,7 +21,7 @@ enum filling { EXACTFULL, UNDERFULL, OVERFULL };
 constexpr bool RESERVE_STORAGE      = true;
 constexpr bool DONT_RESERVE_STORAGE = false;
 
-size_t get_loopend( filling PICKED_FILLING )
+inline size_t get_loopend( filling PICKED_FILLING )
 {
   if ( EXACTFULL == PICKED_FILLING ) return CONTAINERSIZE;
   if ( UNDERFULL == PICKED_FILLING ) return CONTAINERSIZE - random_gen() % FILLING_OFFSET;
