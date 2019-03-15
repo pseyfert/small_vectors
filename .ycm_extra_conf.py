@@ -7,8 +7,8 @@ import ycm_core
 flags = [
 '-Wall',
 '-Werror',
-'-pendantic-errors',
-'-std=c++14',
+'-pedantic-errors',
+'-std=c++17',
 '-fno-strict-aliasing',
 '-fopenmp',
 '-DNDEBUG',
@@ -17,11 +17,11 @@ flags = [
 # relevant for c++ headers.
 # For a C project, you would set this to 'c' instead of 'c++'.
 '-x', 'c++',
-'-isystem', '/home/pseyfert/coding/tbb/include',
-'-isystem', '/home/pseyfert/coding/benchmark/install/include',
-'-isystem', '/home/pseyfert/coding/abseil-cpp',
-'-isystem', '/usr/include',
-'-isystem', '/usr/include/llvm-3.9/',
+# '-isystem', '/home/pseyfert/coding/tbb/include',
+# '-isystem', '/home/pseyfert/coding/benchmark/install/include',
+# '-isystem', '/home/pseyfert/coding/abseil-cpp',
+'-isystem', '/home/pseyfert/.local/include',
+# '-isystem', '/usr/include/llvm-3.9/',
 ]
 
 
