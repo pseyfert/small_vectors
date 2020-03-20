@@ -2,10 +2,12 @@ from matplotlib import pylab as plt
 import re
 import numpy as np
 
+do_plot_for = "UNDERFULL"  # "OVERFULL" "EXACTFULL"
 
-#with open("multi_bench_complex2.log", "r") as f:
-with open("multi_bench.log", "r") as f:
-    loglines = [line.split(" ns") for line in f.readlines() if re.match("create.*_min", line) or re.match("reserve.*_min", line)]
+# with open("multi_bench.log", "r") as f:
+with open("multi_bench_complex.log", "r") as f:
+    loglines = [line.split(" ns") for line in f.readlines() if re.match(
+        "create.*_min", line) or re.match("reserve.*_min", line)]
 
 grab_name = re.compile("_min *[0-9]*")
 config_to_time = dict()
@@ -50,9 +52,7 @@ for key in config_to_time.keys():
     if exact_reserve:
         container_name += "::reserve(rightsize)"
 
-    if underfull:
-    #if exactfill:
-    #if overfull:
+    if (underfull and do_plot_for == "UNDERFULL") or (exactfill and do_plot_for == "EXACTFULL") or (overfull and do_plot_for == "OVERFULL"):
         if container_name is None:
             print("PANIC")
             continue
@@ -61,18 +61,19 @@ for key in config_to_time.keys():
         else:
             container_to_speeds[container_name] = {
                 N_threads: config_to_time[key]
-                }
-    if underfull and container_name == "std::vector":
-    #if exactfill and container_name == "std::vector":
-    #if overfull and container_name == "std::vector":
+            }
+
+    if container_name == "std::vector" and ((underfull and do_plot_for == "UNDERFULL") or (exactfill and do_plot_for == "EXACTFULL") or (overfull and do_plot_for == "OVERFULL")):
         reference_speeds[N_threads] = config_to_time[key]
 
 container_to_speedups = {}
 
 for container_name in container_to_speeds.keys():
-    container_to_speedups[container_name] = [1./(float(container_to_speeds[container_name][N_threads])/float(reference_speeds[N_threads])) for N_threads in [1, 2, 4]]
+    container_to_speedups[container_name] = [
+        1./(float(container_to_speeds[container_name][N_threads])/float(reference_speeds[N_threads])) for N_threads in [1, 2, 4]]
 
-singlespeeds = [(container_name, container_to_speedups[container_name]) for container_name in container_to_speeds.keys()]
+singlespeeds = [(container_name, container_to_speedups[container_name])
+                for container_name in container_to_speeds.keys()]
 
 singlespeeds.sort(key=lambda x: x[1])
 
@@ -88,7 +89,8 @@ counter = 0
 print("tried to print with")
 print(container_to_speedups)
 for container in (x[0] for x in singlespeeds):
-    plt.bar(xaxis + counter*bar_width, container_to_speedups[container], bar_width, label=container)
+    plt.bar(xaxis + counter*bar_width,
+            container_to_speedups[container], bar_width, label=container)
 
     counter += 1
     # print(container_to_speedups[container])
