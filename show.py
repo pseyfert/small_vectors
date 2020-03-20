@@ -45,6 +45,9 @@ for key in config_to_time.keys():
     container_name = None
     try:
         container_name = re.search("<[a-zA-Z:_]*[ <]", key).group()[1:-1]
+        if re.match(".*pmr.*", key):
+            # nasty hack
+            container_name += "<boost::container::pmr::polymorphic_allocator>"
     except AttributeError:
         pass
     if std_reserve:
@@ -88,6 +91,7 @@ counter = 0
 
 print("tried to print with")
 print(container_to_speedups)
+slowest = min(min(container_to_speedups[k]) for k in container_to_speedups.keys())
 for container in (x[0] for x in singlespeeds):
     plt.bar(xaxis + counter*bar_width,
             container_to_speedups[container], bar_width, label=container)
@@ -100,7 +104,7 @@ plt.ylabel("speedup wrt. vector")
 plt.xlabel("scenario")
 plt.legend()
 plt.tight_layout()
-plt.gca().set_ylim(bottom=0.9)
+plt.gca().set_ylim(bottom=min(0.9, slowest))
 
 
 plt.show()
