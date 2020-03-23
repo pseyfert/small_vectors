@@ -1,11 +1,14 @@
+#!/usr/bin/env python
 from matplotlib import pylab as plt
 import re
 import numpy as np
+import sys
 
 do_plot_for = "UNDERFULL"  # "OVERFULL" "EXACTFULL"
 
 # with open("multi_bench.log", "r") as f:
-with open("multi_bench_complex.log", "r") as f:
+fname = sys.argv[1] if len(sys.argv) > 1 else "multi_bench_complex.log"
+with open(fname, "r") as f:
     loglines = [line.split(" ns") for line in f.readlines() if re.match(
         "create.*_min", line) or re.match("reserve.*_min", line)]
 
