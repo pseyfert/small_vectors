@@ -95,12 +95,12 @@ using OUTER_CONTAINER_WITH_ALLOCATOR = OUTER_CONTAINER_TYPE<
 template <typename INNER_CONTAINER, bool RESERVE, filling PICKED_FILLING>
 static void create_and_push_with_boost_allocator(benchmark::State &state) {
   using alloc_type = typename INNER_CONTAINER::allocator_type;
-  const int storage_size = 1000 * N_BIGTHINGS * (CONTAINERSIZE + FILLING_OFFSET);
+  const int storage_size = 100 * N_BIGTHINGS * (CONTAINERSIZE + FILLING_OFFSET);
   INNER_DATATYPE storage[storage_size];
   for (auto _ : state) {
     boost::container::pmr::monotonic_buffer_resource resource(&storage,
                                                               storage_size);
-    alloc_type local_alloc(resource);
+    alloc_type local_alloc(&resource);
     OUTER_CONTAINER_WITH_ALLOCATOR<INNER_CONTAINER, RESERVE, PICKED_FILLING>
         asdf;
     asdf.reserve(N_BIGTHINGS);
@@ -114,11 +114,11 @@ static void create_and_push_with_boost_allocator(benchmark::State &state) {
 template <typename INNER_CONTAINER, bool RESERVE, filling PICKED_FILLING>
 static void create_and_push_with_std_allocator(benchmark::State &state) {
   using alloc_type = typename INNER_CONTAINER::allocator_type;
-  const int storage_size = 1000 * N_BIGTHINGS * (CONTAINERSIZE + FILLING_OFFSET);
+  const int storage_size = 100 * N_BIGTHINGS * (CONTAINERSIZE + FILLING_OFFSET);
   INNER_DATATYPE storage[storage_size];
   for (auto _ : state) {
     std::pmr::monotonic_buffer_resource resource(&storage, storage_size);
-    alloc_type local_alloc(resource);
+    alloc_type local_alloc(&resource);
     OUTER_CONTAINER_WITH_ALLOCATOR<INNER_CONTAINER, RESERVE, PICKED_FILLING>
         asdf;
     asdf.reserve(N_BIGTHINGS);
@@ -208,42 +208,42 @@ BENCHMARK_TEMPLATE( create_and_push, boost::container::small_vector <INNER_DATAT
 
 // clang-format on
 
-BENCHMARK_TEMPLATE(create_and_push,
+BENCHMARK_TEMPLATE(create_and_push_with_std_allocator,
                    std::vector<INNER_DATATYPE,
                                std::pmr::polymorphic_allocator<INNER_DATATYPE>>,
                    RESERVE_STORAGE, UNDERFULL)
     ->ComputeStatistics("min", compute_min)
     ->ThreadRange(1, 4)
     ->UseRealTime();
-BENCHMARK_TEMPLATE(create_and_push,
+BENCHMARK_TEMPLATE(create_and_push_with_std_allocator,
                    std::vector<INNER_DATATYPE,
                                std::pmr::polymorphic_allocator<INNER_DATATYPE>>,
                    RESERVE_STORAGE, EXACTFULL)
     ->ComputeStatistics("min", compute_min)
     ->ThreadRange(1, 4)
     ->UseRealTime();
-BENCHMARK_TEMPLATE(create_and_push,
+BENCHMARK_TEMPLATE(create_and_push_with_std_allocator,
                    std::vector<INNER_DATATYPE,
                                std::pmr::polymorphic_allocator<INNER_DATATYPE>>,
                    RESERVE_STORAGE, OVERFULL)
     ->ComputeStatistics("min", compute_min)
     ->ThreadRange(1, 4)
     ->UseRealTime();
-BENCHMARK_TEMPLATE(create_and_push,
+BENCHMARK_TEMPLATE(create_and_push_with_std_allocator,
                    std::vector<INNER_DATATYPE,
                                std::pmr::polymorphic_allocator<INNER_DATATYPE>>,
                    DONT_RESERVE_STORAGE, UNDERFULL)
     ->ComputeStatistics("min", compute_min)
     ->ThreadRange(1, 4)
     ->UseRealTime();
-BENCHMARK_TEMPLATE(create_and_push,
+BENCHMARK_TEMPLATE(create_and_push_with_std_allocator,
                    std::vector<INNER_DATATYPE,
                                std::pmr::polymorphic_allocator<INNER_DATATYPE>>,
                    DONT_RESERVE_STORAGE, EXACTFULL)
     ->ComputeStatistics("min", compute_min)
     ->ThreadRange(1, 4)
     ->UseRealTime();
-BENCHMARK_TEMPLATE(create_and_push,
+BENCHMARK_TEMPLATE(create_and_push_with_std_allocator,
                    std::vector<INNER_DATATYPE,
                                std::pmr::polymorphic_allocator<INNER_DATATYPE>>,
                    DONT_RESERVE_STORAGE, OVERFULL)
@@ -252,7 +252,7 @@ BENCHMARK_TEMPLATE(create_and_push,
     ->UseRealTime();
 
 BENCHMARK_TEMPLATE(
-    create_and_push,
+    create_and_push_with_boost_allocator,
     std::vector<INNER_DATATYPE,
                 boost::container::pmr::polymorphic_allocator<INNER_DATATYPE>>,
     RESERVE_STORAGE, UNDERFULL)
@@ -260,7 +260,7 @@ BENCHMARK_TEMPLATE(
     ->ThreadRange(1, 4)
     ->UseRealTime();
 BENCHMARK_TEMPLATE(
-    create_and_push,
+    create_and_push_with_boost_allocator,
     std::vector<INNER_DATATYPE,
                 boost::container::pmr::polymorphic_allocator<INNER_DATATYPE>>,
     RESERVE_STORAGE, EXACTFULL)
@@ -268,7 +268,7 @@ BENCHMARK_TEMPLATE(
     ->ThreadRange(1, 4)
     ->UseRealTime();
 BENCHMARK_TEMPLATE(
-    create_and_push,
+    create_and_push_with_boost_allocator,
     std::vector<INNER_DATATYPE,
                 boost::container::pmr::polymorphic_allocator<INNER_DATATYPE>>,
     RESERVE_STORAGE, OVERFULL)
@@ -276,7 +276,7 @@ BENCHMARK_TEMPLATE(
     ->ThreadRange(1, 4)
     ->UseRealTime();
 BENCHMARK_TEMPLATE(
-    create_and_push,
+    create_and_push_with_boost_allocator,
     std::vector<INNER_DATATYPE,
                 boost::container::pmr::polymorphic_allocator<INNER_DATATYPE>>,
     DONT_RESERVE_STORAGE, UNDERFULL)
@@ -284,7 +284,7 @@ BENCHMARK_TEMPLATE(
     ->ThreadRange(1, 4)
     ->UseRealTime();
 BENCHMARK_TEMPLATE(
-    create_and_push,
+    create_and_push_with_boost_allocator,
     std::vector<INNER_DATATYPE,
                 boost::container::pmr::polymorphic_allocator<INNER_DATATYPE>>,
     DONT_RESERVE_STORAGE, EXACTFULL)
@@ -292,7 +292,7 @@ BENCHMARK_TEMPLATE(
     ->ThreadRange(1, 4)
     ->UseRealTime();
 BENCHMARK_TEMPLATE(
-    create_and_push,
+    create_and_push_with_boost_allocator,
     std::vector<INNER_DATATYPE,
                 boost::container::pmr::polymorphic_allocator<INNER_DATATYPE>>,
     DONT_RESERVE_STORAGE, OVERFULL)
