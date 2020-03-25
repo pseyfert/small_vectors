@@ -95,13 +95,15 @@ template <typename INNER_CONTAINER, bool RESERVE, filling PICKED_FILLING>
 static void create_and_push_with_allocator( benchmark::State& state )
 {
   using alloc_type = typename INNER_CONTAINER::allocator_type;
-  INNER_DATATYPE storage[N_BIGTHINGS * (CONTAINERSIZE + FILLING_OFFSET)];
-  boost::container::pmr::monotonic_buffer_resource resource(
-      &storage, N_BIGTHINGS * (CONTAINERSIZE + FILLING_OFFSET));
-  alloc_type
-    local_alloc; // needs N_BIGTHINGS * ( CONTAINERSIZE + FILLING_OFFSET )
+  const int storage_size = 100 * N_BIGTHINGS * (CONTAINERSIZE + FILLING_OFFSET);
+  INNER_DATATYPE storage[storage_size];
   for ( auto _ : state ) {
-    OUTER_CONTAINER_WITH_ALLOCATOR<INNER_CONTAINER, RESERVE, PICKED_FILLING> asdf;
+    boost::container::pmr::monotonic_buffer_resource resource(&storage,
+                                                              storage_size);
+    alloc_type
+        local_alloc; // needs N_BIGTHINGS * ( CONTAINERSIZE + FILLING_OFFSET )
+    OUTER_CONTAINER_WITH_ALLOCATOR<INNER_CONTAINER, RESERVE, PICKED_FILLING>
+        asdf;
     asdf.reserve(N_BIGTHINGS);
     for ( size_t i = 0; i < N_BIGTHINGS ; i++ ) {
       asdf.push_back( i % CONTAINERSIZE, local_alloc );
