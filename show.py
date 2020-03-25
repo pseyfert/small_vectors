@@ -4,9 +4,10 @@ import re
 import numpy as np
 import sys
 
-do_plot_for = "UNDERFULL"  # "OVERFULL" "EXACTFULL"
+do_plot_for = "UNDERFULL" # "OVERFULL" "UNDERFULL" "OVERFULL" "EXACTFULL"
 
 # with open("multi_bench.log", "r") as f:
+# with open("multi_bench_complex.log", "r") as f:
 fname = sys.argv[1] if len(sys.argv) > 1 else "multi_bench_complex.log"
 with open(fname, "r") as f:
     loglines = [line.split(" ns") for line in f.readlines() if re.match(
@@ -48,9 +49,11 @@ for key in config_to_time.keys():
     container_name = None
     try:
         container_name = re.search("<[a-zA-Z:_]*[ <]", key).group()[1:-1]
-        if re.match(".*pmr.*", key):
+        if re.match(".*boost.*pmr.*", key):
             # nasty hack
             container_name += "<boost::container::pmr::polymorphic_allocator>"
+        elif re.match(".*pmr.*", key):
+            container_name += "<std::pmr::polymorphic_allocator>"
     except AttributeError:
         pass
     if std_reserve:
