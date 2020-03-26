@@ -10,6 +10,8 @@
 #include <boost/container/pmr/unsynchronized_pool_resource.hpp>
 #include <memory_resource>
 
+// #include "Gaudi/Arena/Monotonic.h"
+
 #include <boost/random/taus88.hpp>
 boost::random::taus88 random_gen;
 
@@ -128,6 +130,28 @@ static void create_and_push_with_std_allocator(benchmark::State &state) {
     benchmark::DoNotOptimize(asdf);
   }
 }
+
+// template <typename INNER_CONTAINER, bool RESERVE, filling PICKED_FILLING>
+// static void create_and_push_with_gaudi_allocator(benchmark::State &state) {
+//   using alloc_type = typename INNER_CONTAINER::allocator_type;
+//   for (auto _ : state) {
+//     std::size_t first_block_size =
+//         (CONTAINERSIZE + FILLING_OFFSET) * sizeof(INNER_DATATYPE);
+//     constexpr std::size_t alignment        = 2;
+//     // default upstream allocator
+//     Gaudi::Arena::Monotonic<alignment> arena{first_block_size};
+//
+//     alloc_type local_alloc(arena);
+//     OUTER_CONTAINER_WITH_ALLOCATOR<INNER_CONTAINER, RESERVE, PICKED_FILLING>
+//         asdf;
+//     asdf.reserve(N_BIGTHINGS);
+//     for (size_t i = 0; i < N_BIGTHINGS; i++) {
+//       asdf.emplace_back(i % CONTAINERSIZE, local_alloc);
+//     }
+//     benchmark::DoNotOptimize(asdf);
+//   }
+// }
+//
 
 template <bool RESERVE, filling PICKED_FILLING> struct reservething {
   reservething(size_t N) {
